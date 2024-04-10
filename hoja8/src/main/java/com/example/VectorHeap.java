@@ -1,57 +1,59 @@
 package com.example;
+
 import java.util.Vector;
 
 /**
- * Una implementación de cola de prioridad basada en un montículo (heap),
- * donde los elementos son ordenados según su orden natural o por un Comparator
- * proporcionado en el momento de la construcción de la cola.
+ * Implementación de la cola de prioridad usando un montículo (heap) binario.
+ * Los elementos son organizados en un Vector de tal manera que se mantiene
+ * la propiedad de montículo, permitiendo operaciones eficientes de inserción
+ * y eliminación con prioridad.
  *
- * @param <E> El tipo de elementos que la cola de prioridad mantendrá.
+ * @param <E> el tipo de elementos almacenados en esta cola de prioridad. Debe ser comparable.
  */
 public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E> {
-    private Vector<E> data; // El contenedor interno para almacenar los elementos del heap.
+    private Vector<E> data; // Almacenamiento interno de los elementos del montículo.
 
     /**
-     * Constructor que inicializa el VectorHeap sin elementos.
+     * Constructor que inicializa el montículo (heap) vacío.
      */
     public VectorHeap() {
         data = new Vector<E>();
     }
 
     /**
-     * Calcula el índice del padre del nodo en la posición dada.
+     * Calcula el índice del padre de un nodo.
      *
-     * @param i El índice del nodo.
-     * @return El índice del padre del nodo.
+     * @param i índice del nodo.
+     * @return índice del padre del nodo.
      */
     protected int parent(int i) {
         return (i - 1) / 2;
     }
 
     /**
-     * Calcula el índice del hijo izquierdo del nodo en la posición dada.
+     * Calcula el índice del hijo izquierdo de un nodo.
      *
-     * @param i El índice del nodo.
-     * @return El índice del hijo izquierdo del nodo.
+     * @param i índice del nodo.
+     * @return índice del hijo izquierdo del nodo.
      */
     protected int left(int i) {
         return 2 * i + 1;
     }
 
     /**
-     * Calcula el índice del hijo derecho del nodo en la posición dada.
+     * Calcula el índice del hijo derecho de un nodo.
      *
-     * @param i El índice del nodo.
-     * @return El índice del hijo derecho del nodo.
+     * @param i índice del nodo.
+     * @return índice del hijo derecho del nodo.
      */
     protected int right(int i) {
         return (2 * i) + 2;
     }
 
     /**
-     * Realiza el proceso de percolación hacia arriba para mantener las propiedades del heap.
+     * Percola un elemento hacia arriba para mantener la propiedad del montículo.
      *
-     * @param leaf Índice del nodo que se percolará hacia arriba.
+     * @param leaf índice del nodo a percolar hacia arriba.
      */
     protected void percolateUp(int leaf) {
         int parent = parent(leaf);
@@ -67,7 +69,7 @@ public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     /**
      * Añade un nuevo elemento a la cola de prioridad.
      *
-     * @param value El elemento a añadir.
+     * @param value el elemento a añadir.
      */
     @Override
     public void add(E value) {
@@ -76,9 +78,9 @@ public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     }
 
     /**
-     * Realiza el proceso de percolación hacia abajo para mantener las propiedades del heap.
+     * Percola un elemento hacia abajo para mantener la propiedad del montículo.
      *
-     * @param root Índice del nodo raíz que se percolará hacia abajo.
+     * @param root índice del nodo a percolar hacia abajo.
      */
     protected void pushDownRoot(int root) {
         int heapSize = data.size();
@@ -104,14 +106,14 @@ public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     }
 
     /**
-     * Remueve y retorna el elemento con mayor prioridad en la cola.
+     * Remueve y retorna el elemento con mayor prioridad de la cola.
      *
-     * @return El elemento con mayor prioridad.
+     * @return el elemento con mayor prioridad.
      */
     @Override
     public E remove() {
         if (isEmpty()) {
-            return null; // O lanzar una excepción, dependiendo de cómo desees manejar este caso.
+            return null;
         }
         E minVal = data.get(0);
         data.set(0, data.get(data.size() - 1));
@@ -121,11 +123,35 @@ public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     }
 
     /**
-     * Obtiene, sin remover, el elemento con mayor prioridad en la cola.
+     * Retorna, sin remover, el elemento con mayor prioridad de la cola.
      *
-     * @return El elemento con mayor prioridad, o null si la cola está vacía.
+     * @return el elemento con mayor prioridad.
      */
     @Override
     public E peek() {
         if (isEmpty()) {
+            return null;
+        }
+        return data.get(0);
+    }
 
+    /**
+     * Comprueba si la cola de prioridad está vacía.
+     *
+     * @return true si la cola está vacía, false en caso contrario.
+     */
+    @Override
+    public boolean isEmpty() {
+        return data.isEmpty();
+    }
+
+    /**
+     * Retorna el número de elementos en la cola de prioridad.
+     *
+     * @return el número de elementos en la cola.
+     */
+    @Override
+    public int size() {
+        return data.size();
+    }
+}
